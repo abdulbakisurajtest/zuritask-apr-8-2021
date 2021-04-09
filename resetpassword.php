@@ -3,12 +3,17 @@ session_start();
 include('functions.php');
 // check if user is logged in
 checkLogin();
+$error = "";
 $message = "";
 if(isset($_POST['reset_password']))
 {
-	$message = resetPassword($_SESSION['user']['first_name'], $_SESSION['user']['last_name'], $_SESSION['user']['username'], $_POST['old_password'], $_POST['new_password']);
+	$error = resetPassword($_SESSION['user']['first_name'], $_SESSION['user']['last_name'], $_SESSION['user']['username'], $_POST['old_password'], $_POST['new_password']);
+	if($error === 'success')
+	{
+		$message = 'Password has been changed successfully';
+		unset($error);
+	}
 }
-var_dump($message);
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +27,18 @@ var_dump($message);
 	<h1>Zuri Task - 2021/04/08</h1>
 	<form method="post" action="resetPassword.php">
 		<h2>Reset Password</h2>
+		<!-- Display error messages -->
 		<p style="color: red;">
+			<?php
+			if(!empty($error))
+			{
+				echo $error;
+			}
+			?>
+		</p>
+
+		<!-- Display success messages -->
+		<p style="color: green;">
 			<?php
 			if(!empty($message))
 			{

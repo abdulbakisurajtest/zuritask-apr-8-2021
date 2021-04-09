@@ -52,6 +52,10 @@ function registerUser($firstName, $lastName, $username, $password)
 		    while(!feof($fp))
 		    {
 		        $line = explode("|", fgets($fp));
+		        if(count($line) < 4)
+		        {
+		        	continue;
+		        }
 		        if($line[2] === $username)
 		        {
 		        	return 'Username already exists';
