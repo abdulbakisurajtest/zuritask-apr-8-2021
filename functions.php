@@ -3,16 +3,41 @@
 // Register a new user
 function registerUser($firstName, $lastName, $username, $password)
 {
+
+	$fileName = "user_info.txt";
+	$fileSize = filesize($fileName);
+	
 	// VALIDATE USER INFORMATION
 		
 		// check if first name is a valid string, else return an error
+		if(!isNameValid($firstName))
+		{
+			return 'First name is invalid';
+		}
+
 		// check if last name is a valid string, else return an error
+		if(!isNameValid($lastName))
+		{
+			return 'Last name is invalid';
+		}
+		
 		// check if username is a valid string, else return an error
+		if(!isNameValid($username))
+		{
+			return 'Username is invalid';
+		}
+		
 		// check if password has a valid length, else return an error
+		if(!isPasswordValid($password))
+		{
+			return 'Password is invalid';
+		}
 
 	// SAVE USER INFORMATION
-		
+
 		// convert user information into this format (first|last|username|password)
+		$user_information = $firstName.'|'.$lastName.'|'.$username.'|'.$password;
+		
 		// open file in read mode, else return an error
 		// for each line in file, check if formatted user string matches any line.
 		// if there is a match
@@ -20,57 +45,153 @@ function registerUser($firstName, $lastName, $username, $password)
 			// check if username index of array is the same with new username
 			// return error if it matches
 		// if there is no match
-			// save formatted string to file on a new lin, else return an error
+			// save formatted string to file on a new line, else return an error
+	
+		$fp = fopen($fileName, "r");
+		if($fp && ($fileSize>0))
+		{
+		    while(!feof($fp))
+		    {
+		        $line = explode("|", fgets($fp));
+		        if($line[2] === $username)
+		        {
+		        	return 'Username already exists';
+		        }
+		    }
+		}else
+		{
+			return 'Error accessing user database(1)';
+		}
+		fclose($fp);
 
-	// RETURN SUCCESS MESSAGE
+		$fp = fopen($fileName, "a");
+		if($fp && ($fileSize>0))
+		{
+			fwrite($fp, "\n".$user_information);
+			return TRUE;
+
+		}else
+		{
+			return 'Error accessing user database(2)';
+		}
+		fclose($fp);
+
+		// LOGIN USER
+		
 }
 
 // Log in user
 function loginUser($username, $password)
 {
+	session_start();	// start a session
+
+	$fileName = "user_info.txt";
+	$fileSize = filesize($fileName);
+
 	// VALIDATE USER INFORMATION
 		
-		// check if first name is a valid string, else return an error
-		// check if last name is a valid string, else return an error
 		// check if username is a valid string, else return an error
+		if(!isNameValid($username))
+		{
+			return 'Username is invalid';
+		}
+		
 		// check if password has a valid length, else return an error
+		if(!isPasswordValid($password))
+		{
+			return 'Password is invalid';
+		}
 
 	// CHECK IF USER INFORMATION HAS A MATCH
 		
 		// open file in read mode, else return an error
 		// for each line in file:
-			// convert into an array
+			// convert string into an array
 			// check if username and password match
-			// if there is no match, return ERROR
 			// if there is a match
 				// set session variables for user
 				// return SUCCESS
-}
+			// if there is no match, return ERROR
+		$fp = fopen($fileName, "r");
+		if($fp && ($fileSize>0))
+		{
+		    while(!feof($fp))
+		    {
+		        $line = str_replace(array("\r", "\n"), '', fgets($fp));
+		        $line = explode("|", $line);
+		        if($line[2] === $username && $line[3] === $password)
+		        {
+		        	$_SESSION['user']['first_name'] = $line[0];
+		        	$_SESSION['user']['last_name'] = $line[1];
+		        	$_SESSION['user']['username'] = $line[2];
+		        	return TRUE;
+		        }
+		    }
 
-// Log out user
-function logoutUser()
-{
-	// unset session variables for user
+			// destroy session
+			session_destroy();
+		    return 'Invalid username or password';
+		}else
+		{
+			// destroy session
+			session_destroy();
+
+			return 'Error accessing user database(1)';
+		}
+		fclose($fp);
 }
 
 // Check if user is logged in
 function checkLogin()
 {
-	// check if a session is started, else return FALSE
-	// check if session variables is set, else return FALSE
-	// return TRUE if no error
+	// check if session variables is set, else redirect to login page
+	if(!isset($_SESSION['user']['first_name']) || !isset($_SESSION['user']['last_name']) || !isset($_SESSION['user']['username']))
+	{
+		header('Location: login.php');
+		exit(0);
+	}
 }
 
 // Reset password
 function resetPassword($firstName, $lastName, $username, $oldPassword, $newPassword)
 {
+	session_start();	// start a session
+
+	$fileName = "user_info.txt";
+	$fileSize = filesize($fileName);
+
 	// VALIDATE USER INFORMATION
 		
 		// check if first name is a valid string, else return an error
+		if(!isNameValid($firstName))
+		{
+			return 'First name is invalid';
+		}
+
 		// check if last name is a valid string, else return an error
+		if(!isNameValid($lastName))
+		{
+			return 'Last name is invalid';
+		}
+		
 		// check if username is a valid string, else return an error
+		if(!isNameValid($username))
+		{
+			return 'Username is invalid';
+		}
+		
 		// check if old password has a valid length, else return an error
+		if(!isPasswordValid($oldPassword))
+		{
+			return 'Password is invalid';
+		}
+
 		// check if new password has a valid length, else return an error
+		if(!isPasswordValid($newPassword))
+		{
+			return 'Password is invalid';
+		}
+
 
 	// CHECK IF USER IS VALID
 		
@@ -83,11 +204,52 @@ function resetPassword($firstName, $lastName, $username, $oldPassword, $newPassw
 			// save new user information (formatted)
 		// if there is no match
 			// return ERROR
+		$fp = open($fileName, "r");
+}
+
+// Validate name
+function isNameValid($name)
+{
+	// initialize return variable to true
+	$validity = TRUE;
+	// remove whitespaces
+	$name = trim($name);
+	// check if name is empty
+	if(empty($name))
+	{
+		$validity = FALSE;
+	}
+	// ensure name length is greater than one
+	if(strlen($name)<2)
+	{
+		$validity = FALSE;
+	}
+
+	// other checks can be performed here
+
+	return $validity;
+}
+
+// Validate password
+function isPasswordValid($password)
+{
+	// initialize return variable to true
+	$validity = TRUE;
+	// remove whitespaces
+	$password = trim($password);
+	// ensure password length is greater than 7
+	if(strlen($password)<8)
+	{
+		$validity = FALSE;
+	}
+
+	// other checks can be performed here
+
+	return $validity;
 }
 
 
-
-/* SOME USEFUL SCRIPTS */
+/* SOME USEFUL SCRIPTS 
 
 // read from file
 $users = array();
@@ -120,3 +282,4 @@ fwrite($file, "\n".$new_user);
 	// for each index in array, use implode() function  to convert to string
 	// WRITE TO THE FILE
 	// close the file
+*/
