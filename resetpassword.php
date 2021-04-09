@@ -3,12 +3,12 @@ session_start();
 include('functions.php');
 // check if user is logged in
 checkLogin();
-$message = '';
-
+$message = "";
 if(isset($_POST['reset_password']))
 {
 	$message = resetPassword($_SESSION['user']['first_name'], $_SESSION['user']['last_name'], $_SESSION['user']['username'], $_POST['old_password'], $_POST['new_password']);
 }
+var_dump($message);
 ?>
 
 <!DOCTYPE html>
@@ -39,11 +39,11 @@ if(isset($_POST['reset_password']))
 		<label>
 			<p>
 				New password:<br/>
-				<input type="new_password" name="password">
+				<input type="text" name="new_password">
 			</p>
 		</label>
 		<p>
-			<a href="index.php">Cancel</a>&nbsp;&nbsp;<button type="submit" name="login">Change</button>
+			<a href="index.php">Cancel</a>&nbsp;&nbsp;<button type="submit" name="reset_password">Change</button>
 		</p>
 </body>
 </html>
