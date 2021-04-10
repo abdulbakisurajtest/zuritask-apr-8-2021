@@ -34,25 +34,25 @@ if(isset($_POST['register']))
 		<label>
 			<p>
 				First Name:<br/>
-				<input type="text" name="first_name">
+				<input type="text" name="first_name" required>
 			</p>
 		</label>
 		<label>
 			<p>
 				Last Name:<br/>
-				<input type="text" name="last_name">
+				<input type="text" name="last_name" required>
 			</p>
 		</label>
 		<label>
 			<p>
 				Username:<br/>
-				<input type="text" name="username">
+				<input type="text" name="username" required>
 			</p>
 		</label>
 		<label>
 			<p>
 				Password:<br/>
-				<input type="text" name="password">
+				<input type="password" name="password" required>
 			</p>
 		</label>
 		<p>

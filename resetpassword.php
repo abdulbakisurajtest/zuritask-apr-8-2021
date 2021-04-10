@@ -49,13 +49,13 @@ if(isset($_POST['reset_password']))
 		<label>
 			<p>
 				Old password:<br/>
-				<input type="text" name="old_password">
+				<input type="password" name="old_password" required>
 			</p>
 		</label>
 		<label>
 			<p>
 				New password:<br/>
-				<input type="text" name="new_password">
+				<input type="password" name="new_password" required>
 			</p>
 		</label>
 		<p>

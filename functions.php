@@ -47,7 +47,7 @@ function registerUser($firstName, $lastName, $username, $password)
 			// save formatted string to file on a new line, else return an error
 	
 		$fp = fopen($fileName, "r");
-		if($fp && ($fileSize>0))
+		if($fp)
 		{
 		    while(!feof($fp))
 		    {
@@ -68,7 +68,7 @@ function registerUser($firstName, $lastName, $username, $password)
 		fclose($fp);
 
 		$fp = fopen($fileName, "a");
-		if($fp && ($fileSize>0))
+		if($fp)
 		{
 			fwrite($fp, "\n".$user_information);
 			return TRUE;
@@ -115,7 +115,7 @@ function loginUser($username, $password)
 				// return SUCCESS
 			// if there is no match, return ERROR
 		$fp = fopen($fileName, "r");
-		if($fp && ($fileSize>0))
+		if($fp)
 		{
 		    while(!feof($fp))
 		    {
@@ -139,13 +139,13 @@ function loginUser($username, $password)
 
 			// destroy session
 			session_destroy();
-		    return 'Invalid username or password';
+		    return 'Incorrect username or password';
 		}else
 		{
 			// destroy session
 			session_destroy();
 
-			return 'Error accessing user database(1)';
+			return 'Error accessing user database(1.1)';
 		}
 		fclose($fp);
 }

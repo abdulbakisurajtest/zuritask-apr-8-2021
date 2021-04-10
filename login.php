@@ -34,13 +34,13 @@ if(isset($_POST['login']))
 		<label>
 			<p>
 				Username:<br/>
-				<input type="text" name="username">
+				<input type="text" name="username" required>
 			</p>
 		</label>
 		<label>
 			<p>
 				Password:<br/>
-				<input type="password" name="password">
+				<input type="password" name="password" required>
 			</p>
 		</label>
 		<p>
