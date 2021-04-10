@@ -1,5 +1,4 @@
 <?php
-
 // Register a new user
 function registerUser($firstName, $lastName, $username, $password)
 {
@@ -36,26 +35,25 @@ function registerUser($firstName, $lastName, $username, $password)
 
 		// convert user information into this format (first|last|username|password)
 		$user_information = $firstName.'|'.$lastName.'|'.$username.'|'.$password;
-		
-		// open file in read mode, else return an error
-		// for each line in file, check if formatted user string matches any line.
-		// if there is a match
-			// convert string to array
-			// check if username index of array is the same with new username
-			// return error if it matches
-		// if there is no match
-			// save formatted string to file on a new line, else return an error
 	
+		// open file in read mode, else return an error
 		$fp = fopen($fileName, "r");
 		if($fp)
 		{
+			// for each line in file, check if formatted user string matches any line.
 		    while(!feof($fp))
 		    {
+		    	// format single line into an array
 		        $line = explode("|", fgets($fp));
+		        
+		        // if array indexes is less than 4 (i.e empty space)
 		        if(count($line) < 4)
 		        {
+		        	// skip loop
 		        	continue;
 		        }
+
+		        // if there is a match
 		        if($line[2] === $username)
 		        {
 		        	return 'Username already exists';
@@ -67,6 +65,8 @@ function registerUser($firstName, $lastName, $username, $password)
 		}
 		fclose($fp);
 
+		// if there is no match
+		// save formatted string to file on a new line, else return an error
 		$fp = fopen($fileName, "a");
 		if($fp)
 		{
@@ -107,44 +107,42 @@ function loginUser($username, $password)
 	// CHECK IF USER INFORMATION HAS A MATCH
 		
 		// open file in read mode, else return an error
-		// for each line in file:
-			// convert string into an array
-			// check if username and password match
-			// if there is a match
-				// set session variables for user
-				// return SUCCESS
-			// if there is no match, return ERROR
 		$fp = fopen($fileName, "r");
 		if($fp)
 		{
+			// for each line in file:
 		    while(!feof($fp))
 		    {
+				// convert string into an array
 		        $line = str_replace(array("\r", "\n", "\s"), '', fgets($fp));
 		        $line = explode("|", $line);
+
+		        // if array indexes is greater than 3
 		        if(count($line)>3)
 		        {
+					// check if username and password match
 			        if($line[2] === $username && $line[3] === $password)
 			        {
+						// if there is a match set session variables for user
 			        	$_SESSION['user']['first_name'] = $line[0];
 			        	$_SESSION['user']['last_name'] = $line[1];
 			        	$_SESSION['user']['username'] = $line[2];
 			        	return TRUE;
 			        }
 		        }
-		        else
+		        else 	// if array indexes is less than 4
 		        {
+		        	// skip loop
 		        	continue;
 		        }
 		    }
 
-			// destroy session
+			// if there is no match, return error
 			session_destroy();
 		    return 'Incorrect username or password';
-		}else
+		}
+		else
 		{
-			// destroy session
-			session_destroy();
-
 			return 'Error accessing user database(1.1)';
 		}
 		fclose($fp);
@@ -304,39 +302,4 @@ function isPasswordValid($password)
 
 	return $validity;
 }
-
-
-/* SOME USEFUL SCRIPTS 
-
-// read from file
-$users = array();
-$counter = 0;
-$fileName = 'user_info.txt';
-$file = fopen($fileName, "r");
-if ($file) {
-    while(!feof($file))
-    {
-        $line = explode("|", fgets($file));
-        $users[$counter]['name'] = $line[0];
-        $users[$counter]['password'] = $line[1];
-        $counter++;
-    }
-}
-$counter = 0;
-
-// write to file
-$file = fopen($fileName, "a");
-$new_user = 'New_user|New_user_key';
-fwrite($file, "\n".$new_user);
-
-// replace password in file
-	// open file in read mode
-	// initialize an array to store information
-	// for each line in file, use explode() function to store it in the initialized array
-	// looping through the array index of array, locate index where username and password matches and then replace the password
-	// close the file
-	// open the file in write mode
-	// for each index in array, use implode() function  to convert to string
-	// WRITE TO THE FILE
-	// close the file
-*/
+?>
