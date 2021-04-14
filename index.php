@@ -25,7 +25,7 @@ checkLogin();
 		?>
 	</p>
 	<p>
-		<a href="logout.php">Logout</a> or <a href="resetPassword.php">Reset password</a>
+		<a href="logout.php">Logout</a> or <a href="resetpassword.php">Reset password</a>
 	</p>
 
 </body>
