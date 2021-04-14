@@ -6,7 +6,7 @@ if(isset($_POST['register']))
 	$error = registerUser($_POST['first_name'], $_POST['last_name'], $_POST['username'], $_POST['password']);
 	if($error === TRUE)
 	{
-		header('Location: login.php');
+		header('Location: login.php?register=Account created successfully, login below to continue');
 		exit(0);
 	}
 }
@@ -34,19 +34,19 @@ if(isset($_POST['register']))
 		<label>
 			<p>
 				First Name:<br/>
-				<input type="text" name="first_name" required>
+				<input type="text" name="first_name" value="<?= displayValue('first_name'); ?>" required>
 			</p>
 		</label>
 		<label>
 			<p>
 				Last Name:<br/>
-				<input type="text" name="last_name" required>
+				<input type="text" name="last_name" value="<?= displayValue('last_name'); ?>" required>
 			</p>
 		</label>
 		<label>
 			<p>
 				Username:<br/>
-				<input type="text" name="username" required>
+				<input type="text" name="username" value="<?= displayValue('username'); ?>" required>
 			</p>
 		</label>
 		<label>

@@ -1,6 +1,7 @@
 <?php
 include ('functions.php');
 $error = "";
+$reg_message = "";
 if(isset($_POST['login']))
 {
 	$error = loginUser($_POST['username'], $_POST['password']);
@@ -9,6 +10,10 @@ if(isset($_POST['login']))
 		header('Location: index.php');
 		exit(0);
 	}
+}
+if(isset($_GET['register']))
+{
+	$reg_message = $_GET['register'];
 }
 ?>
 
@@ -23,6 +28,14 @@ if(isset($_POST['login']))
 	<h1>Zuri Task - 2021/04/08</h1>
 	<form method="post" action="login.php">
 		<h2>Login Form</h2>
+		<p style="color: green;">
+			<?php
+			if(!empty($reg_message))
+			{
+				echo $reg_message;
+			}
+			?>
+		</p>
 		<p style="color: red;">
 			<?php
 			if(!empty($error))
@@ -34,7 +47,7 @@ if(isset($_POST['login']))
 		<label>
 			<p>
 				Username:<br/>
-				<input type="text" name="username" required>
+				<input type="text" name="username" value="<?= displayValue('username'); ?>" required>
 			</p>
 		</label>
 		<label>

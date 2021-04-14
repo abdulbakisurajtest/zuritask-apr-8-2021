@@ -120,14 +120,22 @@ function loginUser($username, $password)
 		        // if array indexes is greater than 3
 		        if(count($line)>3)
 		        {
-					// check if username and password match
-			        if($line[2] === $username && $line[3] === $password)
+					// check if username match
+			        if($line[2] === $username)
 			        {
-						// if there is a match set session variables for user
-			        	$_SESSION['user']['first_name'] = $line[0];
-			        	$_SESSION['user']['last_name'] = $line[1];
-			        	$_SESSION['user']['username'] = $line[2];
-			        	return TRUE;
+			        	// check if password match
+			        	if($line[3] === $password)
+						{
+							// if there is a match, set session variables for user
+						    $_SESSION['user']['first_name'] = $line[0];
+						    $_SESSION['user']['last_name'] = $line[1];
+						    $_SESSION['user']['username'] = $line[2];
+						    return TRUE;
+						}
+						else
+						{
+							return 'Incorrect password';
+						}
 			        }
 		        }
 		        else 	// if array indexes is less than 4
@@ -137,9 +145,9 @@ function loginUser($username, $password)
 		        }
 		    }
 
-			// if there is no match, return error
+			// if there is no such username, return error
 			session_destroy();
-		    return 'Incorrect username or password';
+		    return 'User not found';
 		}
 		else
 		{
@@ -301,5 +309,14 @@ function isPasswordValid($password)
 	// other checks can be performed here
 
 	return $validity;
+}
+
+// Display previously filled values in form input
+function displayValue($name)
+{
+	if(isset($_POST[$name]) && !empty($_POST[$name]))
+	{
+		echo $_POST[$name];
+	}
 }
 ?>
