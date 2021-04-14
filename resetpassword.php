@@ -25,7 +25,7 @@ if(isset($_POST['reset_password']))
 </head>
 <body>
 	<h1>Zuri Task - 2021/04/08</h1>
-	<form method="post" action="resetPassword.php">
+	<form method="post" action="resetpassword.php">
 		<h2>Reset Password</h2>
 		<!-- Display error messages -->
 		<p style="color: red;">
