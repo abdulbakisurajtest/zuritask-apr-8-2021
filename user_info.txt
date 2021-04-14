@@ -1,0 +1,2 @@
+htmltag|hack|htmltaghack|htmltaghack
+htmltag|hack|<strong>|htmltaghackfailed

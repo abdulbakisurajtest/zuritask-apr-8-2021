@@ -17,10 +17,10 @@ checkLogin();
 	<p>
 		Welcome, 
 		<?php
-		echo $_SESSION['user']['first_name'];
-		echo ' '.$_SESSION['user']['last_name'];
+		echo htmlentities($_SESSION['user']['first_name']);
+		echo ' '.htmlentities($_SESSION['user']['last_name']);
 		echo '<strong>';
-		echo ' @'.$_SESSION['user']['username'];
+		echo ' @'.htmlentities($_SESSION['user']['username']);
 		echo '</strong>';
 		?>
 	</p>
