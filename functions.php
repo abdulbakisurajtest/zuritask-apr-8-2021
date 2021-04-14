@@ -32,6 +32,8 @@ function registerUser($firstName, $lastName, $username, $password)
 		}
 
 	// SAVE USER INFORMATION
+		// encrypt user password
+		$password = hash('md5', $password);
 
 		// convert user information into this format (first|last|username|password)
 		$user_information = $firstName.'|'.$lastName.'|'.$username.'|'.$password;
@@ -105,6 +107,9 @@ function loginUser($username, $password)
 		}
 
 	// CHECK IF USER INFORMATION HAS A MATCH
+		
+		// hash password
+		$password = hash('md5', $password);
 		
 		// open file in read mode, else return an error
 		$fp = fopen($fileName, "r");
