@@ -213,6 +213,11 @@ function resetPassword($firstName, $lastName, $username, $oldPassword, $newPassw
 
 	// CHECK IF USER IS VALID
 		
+		// encrypt passwords
+		$oldPassword = hash('md5', $oldPassword);
+		$newPassword = hash('md5', $newPassword);
+
+
 		// convert old user information into this format (first|last|username|oldpassword)
 		$oldUserInformation = $firstName.'|'.$lastName.'|'.$username.'|'.$oldPassword;
 
